@@ -21,3 +21,9 @@ The next step(s) for this project include:
 - Implementing the client-side functionality.
 
 ## Installation
+
+This abstact'll be updated once the client side's ready
+
+---
+
+*This project began on November 11th, 2024*
