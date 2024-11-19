@@ -17,7 +17,8 @@
 #include <string.h> // for memset
 #include <cstdio> // for perror
 #include <algorithm>
+#include <thread>
 
-constexpr int buffer_size = 1096;
+static const int buffer_size = 1024;
 
 #endif // SHARED_H

@@ -15,3 +15,11 @@ add_executable(server
     Server.cpp
     shared.h
 )
+
+# Create an executable for the client
+add_executable(client
+    main_client.cpp
+    Client.h
+    Client.cpp
+    shared.h
+)

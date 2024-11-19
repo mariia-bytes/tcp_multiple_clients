@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    int port = std::stoi(argv[1]);
+    unsigned int port = std::stoi(argv[1]);
     Server server(port);
     server.run();
     

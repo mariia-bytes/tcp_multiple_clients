@@ -10,7 +10,7 @@
 
 class Server {
     private:
-        int port;
+        unsigned port;
         int server_fd;        
         struct sockaddr_in address;
         fd_set readfds;
@@ -26,9 +26,12 @@ class Server {
         void check_activity();        
     
     public:
-        Server (int port);
+        Server (const unsigned int& port);
         ~Server();
-        void run();    
+        void run();
+
+        void receive_message();
+        void send_message();    
 };
 
 #endif // SERVER_H

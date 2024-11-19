@@ -3,10 +3,11 @@
  * Server declared in Server.h
 ******************************************************************************/
 
-#include "shared.h"
 #include "Server.h"
 
-Server::Server(int port)
+extern const int buffer_size;
+
+Server::Server(const unsigned int& port)
     : port(port), server_fd(-1) {
     server_fd = create_socket();
     bind_socket();
@@ -73,10 +74,10 @@ void Server::accept_connection() {
     }
 
     client_sockets.push_back(new_socket);
-    std::cout << "\nNew connection" << std::endl;
-    std::cout << "socket FD: " << new_socket << std::endl;
-    std::cout << "IP: " << inet_ntoa(client_address.sin_addr) << std::endl;
-    std::cout << "port: " << ntohs(client_address.sin_port) << std::endl;
+    std::cout << "\nNew connection (fd: " << new_socket 
+              << ", ip: " << inet_ntoa(client_address.sin_addr) 
+              << ", port: " << ntohs(client_address.sin_port) 
+              << ")" << std::endl;
 }
 
 void Server::handle_client(int client_socket) {
@@ -89,10 +90,33 @@ void Server::handle_client(int client_socket) {
             close_client(client_socket, std::distance(client_sockets.begin(), it));
         }
     } else {
+        // receive_message();
         buffer[valread] = '\0';
-        send(client_socket, buffer, valread, 0);
+        std::cout << "CLIENT(" << client_socket << ")> " << buffer << std::endl;
+        send(client_socket, buffer, valread, 0); // use this to echo message back to the client
     }
 }
+
+// the code below is bad but I need it for the future
+/*
+void Server::receive_message() {
+    char buffer[buffer_size] = {0};
+    int valread;
+    while (true) {
+        for (auto client_fd : client_sockets) {
+        valread = read(client_fd, buffer, buffer_size);
+        if (valread > 0) {
+            buffer[valread] = '\0';
+            std::cout << "SERVER> " << buffer << std::endl;
+        } else if (valread == 0) {
+            std::cout << "Server closed the connection" << std::endl;
+        } else {
+            perror("Receive message failed");
+        }
+        }
+    }
+}
+*/
 
 void Server::close_client(int client_socket, size_t index) {
     struct sockaddr_in addr;
@@ -100,8 +124,10 @@ void Server::close_client(int client_socket, size_t index) {
 
     getpeername(client_socket, (struct sockaddr*)&addr, &address_length);
 
-    std::cout << "\nHost disconnected on IP " << inet_ntoa(addr.sin_addr)
-              << ", port " << ntohs(addr.sin_port) << std::endl;
+    std::cout << "\nClient (" << client_socket 
+              << ", " << inet_ntoa(addr.sin_addr) 
+              << ", " << ntohs(addr.sin_port) 
+              << ") disconnected" << std::endl;
 
     close(client_socket);
 
