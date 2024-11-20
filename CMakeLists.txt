@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(tcp_multiple_clients)
+project(Barebone_TCP_Multiple_Clients)
 
 # Set C++ standard to C++20
 set(CMAKE_CXX_STANDARD 20)
